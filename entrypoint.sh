@@ -27,7 +27,17 @@ cp /certs/$CERTNAME.key /etc/ssl/private/postfix.key
 chmod 000 /certs # Make /certs inaccessible
 
 # TODO milters
-# TODO postmap
+
+# Copy postfix configuration files to their final spot
+# And set permissions
+cp /conf/virtual-{aliases,users,domains} /etc/postfix/
+chown root:root /etc/postfix/virtual-{aliases,users,domains}
+chmod 655 /etc/postfix/virtual-{aliases,users,domains}
+
+postmap /etc/postfix/virtual-users
+postmap /etc/postfix/virtual-domains
+postmap /etc/postfix/virtual-aliases
+postalias /etc/aliases
 
 echo Starting postfix
 postfix start
